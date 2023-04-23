@@ -37,27 +37,27 @@ async def hello(message):
     
 
 @client.command()
-async def genre_track_recommend(ctx, genre1, genre2, genre3):
-    results = sp.search(q=f'genre:{genre1} OR genre:{genre2} OR genre:{genre3}', type='track', limit=5)
-    #print(results)
-    if not results['tracks']['items']:
-        response = sp.recommendation_genre_seeds()
-        genre_names = [genre_name.capitalize() for genre_name in response['genres']] 
-        available_genres = '\n'.join(genre_names)
-        badGenres = (f'Sorry, no tracks found for some of the selected genres. '
-                    f'Please choose up to three genres, separated by commas and spaces again.\n'
-                    f'You can choose from the following genres:\n{available_genres}\n'
-                    f'Some common groups of genres: jazz, blues, funk\n'
-                    f'reggae, ska, dancehall\n'
-                    f'country, folk, bluegrass\n'
-                    f'hip-hop, rap, R&B\n'
-                    f'classical, opera, baroque\n'
-                    f'Example: !genre_track_recommend rock pop electronic')
-        await ctx.send(badGenres)
-    else:
-        track_names = [track['external_urls']['spotify'] for track in results['tracks']['items']]
-        for NO in track_names:
-            await ctx.channel.send(NO)
+async def genre_track_recommend(ctx, genre1):
+    genre1 = genre1.lower()  # convert the genre string to lowercase
+    try:
+        results = sp.recommendations(seed_genres=[genre1], limit=5)
+        if not results['tracks']:
+            response = sp.recommendation_genre_seeds()
+            genre_names = [genre_name.capitalize() for genre_name in response['genres']] 
+            available_genres = '\n'.join(genre_names)
+            badGenres = (f'Sorry, no tracks found for that genre. '
+                        f'Please choose another genre.\n'
+                        f'You can choose from the following genres:\n{available_genres}\n'
+                        f'Example: !genre_track_recommend rock')
+            await ctx.send(badGenres)
+        else:
+            track_names = [track['external_urls']['spotify'] for track in results['tracks']]
+            for NO in track_names:
+                await ctx.channel.send(NO)
+    except Exception as e:
+        print(e)
+        error_msg = 'An error occurred while processing your request. Please try again later.'
+        await ctx.send(error_msg)
 
 
 
