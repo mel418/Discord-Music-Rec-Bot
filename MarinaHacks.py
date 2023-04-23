@@ -5,7 +5,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 #from random import randint
 from os import getenv
 import dotenv
-from time import sleep
+import asyncio
 
 dotenv.load_dotenv()
 
@@ -27,11 +27,11 @@ async def on_ready():
 
 # Define the on_message event handler
 @client.command()
+
 async def hello(message):
-    while True:
         #if randint(0,25) == 1:
         await message.channel.send('Hello, world!')
-        sleep(13)
+    
 
 # example uri : spotify:artist:1uNFoZAHBGtllmzznpCI3s
 
