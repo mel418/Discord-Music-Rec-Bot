@@ -15,8 +15,8 @@ TOKEN = getenv('TOKEN')
 client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 spotify_client_credentials = SpotifyClientCredentials(
-    client_id='7ce33ad3eaa441b6a8f39caad1dd1120',
-    client_secret='f8810c365fbe421c8692c59708c33beb'
+    client_id=getenv('spotid'),
+    client_secret=getenv('spotsecret')
 )
 sp = spotipy.Spotify(client_credentials_manager=spotify_client_credentials)
 
