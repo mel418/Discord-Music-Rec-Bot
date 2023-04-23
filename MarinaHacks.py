@@ -3,10 +3,13 @@ from discord.ext import commands
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 #from random import randint
+from os import getenv
+import dotenv
 from time import sleep
 
+dotenv.load_dotenv()
 
-TOKEN ='MTA5OTQyMDY0MDM0MTEzOTYwOA.Gn9DAu.swXUrNg5w3rp0LA6GJft5vDnyB7z35oYIEdbZU'
+TOKEN = getenv('TOKEN')
 
 # Initialize the client object
 client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
